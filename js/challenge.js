@@ -1,67 +1,62 @@
-const display = document.querySelector("h1#counter");
-const downButton= document.getElementById("-");
-const upButton= document.getElementById("+");
-const heart= document.getElementById("<3");
-const playBtn= document.getElementById("pause");
-const likes= document.querySelector(".likes")
-const comments=document.querySelector("input")
-const commentsDisplay= document.querySelector(".comments")
-let number=0
-
-
-let intervalId = setInterval(runFunction, 1000);
-
-function runFunction(){
-    display.innerText= number++;
-};
-
-
-playBtn.addEventListener("click",pauseEventHandler);
-
-function pauseEventHandler(e){
-    clearInterval(intervalId);
-    playBtn.innerHTML = "resume";
-    playBtn.removeEventListener("click", pauseEventHandler)
-    playBtn.addEventListener("click", resumeEventHandler);
+var i =-1;
+var j = 0;
+var interval = setInterval( increment, 1000);
+function increment(){
+    i++;
+    document.querySelector('h1#counter').textContent = i;
+    j = 0;
 }
+increment();
 
-function resumeEventHandler(e){
-    intervalId = setInterval(runFunction, 1000);
-    playBtn.innerHTML = "pause";
-    playBtn.removeEventListener("click", resumeEventHandler)
-    playBtn.addEventListener("click", pauseEventHandler);
-}
+document.getElementById("minus").addEventListener("click", function(){
+  i--;
+  document.querySelector('h1#counter').textContent = i;
+});
 
+document.getElementById("plus").addEventListener("click", function(){
+  i++;
+  document.querySelector('h1#counter').textContent = i;
+});
 
-downButton.addEventListener("click", downEventHandler);
+document.getElementById("heart").addEventListener("click", function(){
+  j++;
+  var li = document.createElement("li");
+  var node = document.createTextNode(i + " has been liked " + j + " time(s).")
+  var likes = document.querySelector('.likes')
+  var lastLike = document.querySelector('.likes').lastChild
+  li.appendChild(node);
+  if(j>1){
+   lastLike.replaceWith(li)
+  } else {
+    likes.appendChild(li);
+  }
+});
 
-function downEventHandler(e){
-    number--;
-    display.innerText= number--
-    // console.log(number)
-};
+document.getElementById("pause").addEventListener("click", function(){
+  if(document.querySelector('#pause').innerText == "pause") {
+    clearInterval(interval)
+    document.querySelector('#pause').innerText = "resume"
+    document.getElementById("minus").disabled = true;
+    document.getElementById("plus").disabled = true;
+    document.getElementById("heart").disabled = true;
+    document.getElementById("submit").disabled = true;
+  } else {
+    interval = setInterval( increment, 1000);
+    document.querySelector('#pause').innerText = "pause"
+    document.getElementById("minus").disabled = false;
+    document.getElementById("plus").disabled = false;
+    document.getElementById("heart").disabled = false;
+    document.getElementById("submit").disabled = false;
+  }
+});
 
-upButton.addEventListener("click", upEventHandler);
-
-function upEventHandler(e){
-    number++;
-    display.innerText= number++
-};
-
-heart.addEventListener("click",heartEventHandler);
-
-function heartEventHandler(e){
-    const newLi = document.createElement('li')
-    newLi.innerText = `${display.innerText} has been liked`
-    likes.appendChild(newLi)
-};
-
-comments.addEventListener("change",commentEventHandler);
-
-function commentEventHandler(e){
-    // e.preventDefault();
-    // commentsDisplay.textContent = this.value;
-    const newLi = document.createElement('li')
-    newLi.innerText = this.value
-    commentsDisplay.appendChild(newLi)
-};
+document.getElementById("submit").addEventListener("click", function(event){
+  event.preventDefault();
+  var comment = document.querySelector('input#comment-input').value
+  var commentsList = document.querySelector('.comments')
+  var p = document.createElement("p");
+  var node = document.createTextNode(comment)
+  p.appendChild(node);
+  commentsList.appendChild(p);
+  document.querySelector('input#comment-input').value = ''
+});
