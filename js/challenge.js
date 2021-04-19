@@ -17,7 +17,7 @@ function runFunction(){
 
 
 playBtn.addEventListener("click",pauseEventHandler);
-    
+
 function pauseEventHandler(e){
     clearInterval(intervalId);
     playBtn.innerHTML = "resume";
@@ -39,14 +39,14 @@ function downEventHandler(e){
     number--;
     display.innerText= number--
     // console.log(number)
-}; 
+};
 
 upButton.addEventListener("click", upEventHandler);
 
 function upEventHandler(e){
     number++;
     display.innerText= number++
-}; 
+};
 
 heart.addEventListener("click",heartEventHandler);
 
@@ -54,12 +54,12 @@ function heartEventHandler(e){
     const newLi = document.createElement('li')
     newLi.innerText = `${display.innerText} has been liked`
     likes.appendChild(newLi)
-}; 
+};
 
-comments.addEventListener("change",commentEventHandler); 
+comments.addEventListener("change",commentEventHandler);
 
 function commentEventHandler(e){
-    // e.preventDefault(); 
+    // e.preventDefault();
     // commentsDisplay.textContent = this.value;
     const newLi = document.createElement('li')
     newLi.innerText = this.value
