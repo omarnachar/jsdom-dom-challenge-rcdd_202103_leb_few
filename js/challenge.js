@@ -1,69 +1,67 @@
-let counter_id = document.getElementById("counter")
-let pause_id = document.getElementById("pause")
-let minus_id = document.getElementById("-")
-let plus_id = document.getElementById("+")
-let heart_id = document.getElementById("<3")
-let list_id = document.getElementById("list")
-let comment_id = document.getElementsByTagName("form")[0]
+const display = document.querySelector("h1#counter");
+const downButton= document.getElementById("-");
+const upButton= document.getElementById("+");
+const heart= document.getElementById("<3");
+const playBtn= document.getElementById("pause");
+const likes= document.querySelector(".likes")
+const comments=document.querySelector("input")
+const commentsDisplay= document.querySelector(".comments")
+let number=0
 
-let life = true;
 
-let counter = 0
-let timer = setInterval(function(){
-  if (life){
-    counter_id.innerHTML = counter
-    counter += 1;
-  }
+let intervalId = setInterval(runFunction, 1000);
 
-}, 1000);
+function runFunction(){
+    display.innerText= number++;
+};
 
-plus_id.addEventListener("click", function(){
-  counter += 1;
-  counter_id.innerHTML = parseInt(counter_id.innerHTML) + 1
-})
 
-minus_id.addEventListener("click", function(){
-  counter -= 1;
-  counter_id.innerHTML = parseInt(counter_id.innerHTML) - 1
-})
+playBtn.addEventListener("click",pauseEventHandler);
+    
+function pauseEventHandler(e){
+    clearInterval(intervalId);
+    playBtn.innerHTML = "resume";
+    playBtn.removeEventListener("click", pauseEventHandler)
+    playBtn.addEventListener("click", resumeEventHandler);
+}
 
-heart_id.addEventListener("click", function(){
-  let like = document.querySelector(".likes")
+function resumeEventHandler(e){
+    intervalId = setInterval(runFunction, 1000);
+    playBtn.innerHTML = "pause";
+    playBtn.removeEventListener("click", resumeEventHandler)
+    playBtn.addEventListener("click", pauseEventHandler);
+}
 
-  if(document.getElementById(`Li${counter}`) == null){
-    let li = document.createElement("li");
-    li.setAttribute("id", `Li${counter}`)
-    li.innerHTML = `${counter} have this many likes:1`
-    like.appendChild(li)
-  }
-  else {
-    let li = document.getElementById(`Li${counter}`)
-    let splitted = parseInt(li.innerHTML.split(":")[1]) + 1
-    li.innerHTML = `${counter} have this many likes:${splitted}`
-    like.appendChild(li)
-  }
 
-})
+downButton.addEventListener("click", downEventHandler);
 
-pause_id.addEventListener("click",function(){
-  if (life){
-    pause_id.innerHTML = "resume"
-    life = false
-  }
-  else{
-    pause_id.innerHTML = "pause"
-    life = true
-  }
+function downEventHandler(e){
+    number--;
+    display.innerText= number--
+    // console.log(number)
+}; 
 
-})
+upButton.addEventListener("click", upEventHandler);
 
-comment_id.addEventListener("submit",function(a){
-  a.preventDefault()
-  let b=this.children[0]
-  let c=b.value;
-  b.value="";
-  let d=document.querySelector(".comments")
-  let e=document.createElement("p")
-  e.innerText=c
-  d.appendChild(e)
-})
+function upEventHandler(e){
+    number++;
+    display.innerText= number++
+}; 
+
+heart.addEventListener("click",heartEventHandler);
+
+function heartEventHandler(e){
+    const newLi = document.createElement('li')
+    newLi.innerText = `${display.innerText} has been liked`
+    likes.appendChild(newLi)
+}; 
+
+comments.addEventListener("change",commentEventHandler); 
+
+function commentEventHandler(e){
+    // e.preventDefault(); 
+    // commentsDisplay.textContent = this.value;
+    const newLi = document.createElement('li')
+    newLi.innerText = this.value
+    commentsDisplay.appendChild(newLi)
+};
